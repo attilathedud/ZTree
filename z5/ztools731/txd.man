@@ -1,0 +1,45 @@
+txd(1)									txd(1)
+
+
+
+NAME
+       txd − Z code disassembler for Infocom game files
+
+SYNOPSIS
+       txd [ −adgns ] [ −w n ] [ −u file ] [ −S n ] story‐file
+
+DESCRIPTION
+       Txd  is	a  program for disassembling an Infocom format story file.  It
+       can handle all version of the story file format (V1 through V8).
+
+OPTIONS
+       txd supports the following options:
+
+       −a      generate alternate syntax used by Inform.
+
+       −d      dump hex of opcodes and data.
+
+       −g      turn off grammar for action routines.
+
+       −n      use addresses instead of labels
+
+       −w n    display width (0 = no wrap)
+
+       −s      Symbolic mode (Inform 6+ only)
+
+       −u file Read user symbol table, implies ‐s for Inform games
+
+       −S n    Dump high strings only, starting at address n
+
+SEE ALSO
+       check(1), infodump(1), inforead(1), pix2gif(1)
+
+AUTHOR
+       Mark Howell 25 August 1992 howell_ma@movies.enet.dec.com
+
+CURRENT MAINTAINER
+       Matthew Russotto russotto@pond.com
+
+
+
+Ztools 7.3.1			 November 1998				txd(1)

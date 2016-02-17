@@ -1,0 +1,61 @@
+infodump(1)							   infodump(1)
+
+
+
+NAME
+       infodump − data file dumper for infocom format game files
+
+SYNOPSIS
+       infodump  [  −iamostgdf	]  [  −c n ] [ −w n ] [ −u file ] story‐file [
+       story‐file... ]
+
+DESCRIPTION
+       Infodump is a program for displaying the contents of an Infocom	format
+       story file.  It works for V1 to V8 games, modulo the limitations listed
+       below.
+
+OPTIONS
+       The following options are supported
+
+       −i    Show game information in the story  file  header.	 This  is  the
+	     default  operation  for infodump: if not switches are given, then
+	     only the header will be displayed.
+
+       −a    Show abbreviations.
+
+       −m    Show the data file map.
+
+       −o    Display information about all objects defined in the story  file.
+
+       −t    Show  the	object tree, with names of contained objects displayed
+	     indented from the name of the containing object.
+
+       −g    Show the verb grammar.
+
+       −d    Show the story dictionary
+
+       −f    Enable all of the above options (‐a, ‐m, ‐o, ‐t, ‐g and ‐d)
+
+       −s    Display Inform symbolic names in object and grammar displays.
+
+       −c n  The numbers of columns to use when displaying the dictionary.
+
+       −w n  Specifies the display width, used	to  determine  where  to  word
+	     wrap.  If n is 0, then no wrapping will be performed.
+
+       −u file
+	     Display symbols from file in object and grammar displays.	Use of
+	     this option implies ‐s.
+
+SEE ALSO
+       check(1), inforead(1), pix2gif(1), txd(1)
+
+AUTHOR
+       Mark Howell 28 August 1992 howell_ma@movies.enet.dec.com
+
+CURRENT MAINTAINER
+       Matthew Russotto russotto@pond.com
+
+
+
+Ztools 7.3.1			 November 1998			   infodump(1)
