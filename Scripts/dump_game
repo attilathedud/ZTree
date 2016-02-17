@@ -1,0 +1,15 @@
+#!/bin/bash
+# Simple wrapper to speed up dumping games into their separate files
+# Called with the game's name
+# ./dump_game awaken.z5
+
+if [ $# -eq 0 ]
+    then
+        echo "Please supply the game's name"
+        exit 1
+fi
+
+../Scripts/infodump -o $1 > ../Dumps/object_dump
+../Scripts/infodump -t $1 > ../Dumps/object_tree_dump
+../Scripts/infodump -d $1 > ../Dumps/dict_dump
+../Scripts/infodump -g $1 > ../Dumps/verb_dump
