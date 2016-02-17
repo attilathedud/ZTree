@@ -1,7 +1,7 @@
 #!/bin/bash
-# Simple wrapper to speed up dumping games into their separate files
+# Simple wrapper to speed up dumping games into their separate files into the Dumps directory
 # Called with the game's name
-# ./dump_game awaken.z5
+# ./dump_game ../Games/awaken.z5
 
 if [ $# -eq 0 ]
     then
@@ -9,7 +9,9 @@ if [ $# -eq 0 ]
         exit 1
 fi
 
-../Scripts/infodump -o $1 > ../Dumps/object_dump
-../Scripts/infodump -t $1 > ../Dumps/object_tree_dump
-../Scripts/infodump -d $1 > ../Dumps/dict_dump
-../Scripts/infodump -g $1 > ../Dumps/verb_dump
+../ZTools/infodump -o $1 > ../Dumps/$(basename $1)_object_dump
+../ZTools/infodump -t $1 > ../Dumps/$(basename $1)_object_tree_dump
+../ZTools/infodump -d $1 > ../Dumps/$(basename $1)_dict_dump
+../ZTools/infodump -g $1 > ../Dumps/$(basename $1)_verb_dump
+
+../ZTools/txd -dns $1 > ../Dumps/$(basename $1)_txd_dump
