@@ -10,7 +10,6 @@ if [ $# -eq 0 ]
 fi
 
 ../ZTools/infodump -o $1 > ../Dumps/$(basename $1)_object_dump
-../ZTools/infodump -t $1 > ../Dumps/$(basename $1)_object_tree_dump
 ../ZTools/infodump -d $1 > ../Dumps/$(basename $1)_dict_dump
 ../ZTools/infodump -g $1 > ../Dumps/$(basename $1)_verb_dump
 
