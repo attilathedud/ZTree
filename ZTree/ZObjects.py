@@ -78,4 +78,5 @@ class ZGame:
         pos = graphviz_layout(G, prog='dot')
         nx.draw_networkx(G, pos, node_size=1600, node_color='blue', node_alpha=0.3, node_text_size=12)
 
+        plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
         plt.show()
