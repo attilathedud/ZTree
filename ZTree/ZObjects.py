@@ -10,10 +10,14 @@ class ZObject:
         self.description = ""
         self.parent_id = 0
         self.child_id = 0
+        self.sibling_id = 0
+
+    def object_key(self):
+        return str(self.object_id) + "\n" + str(self.description)
 
     def display_node(self):
         print("Object ID: " + str(self.object_id) + "\nParent ID: " + str(self.parent_id) + "\nChild ID: " +
-              str(self.child_id) + "\nDescription: " + self.description)
+              str(self.child_id) + "\nSibling ID: " + str(self.sibling_id) + "\nDescription: " + self.description)
 
 
 class ZGame:
@@ -40,6 +44,7 @@ class ZGame:
                     cur_object.object_id = int(line[: line.find(". Attributes")].strip())
                 if line.find("Parent object:") != -1:
                     cur_object.parent_id = int(line[line.find("Parent object:") + 14: line.find("Sibling object:")].strip())
+                    cur_object.sibling_id = int(line[line.find("Sibling object:") + 15: line.find("Child object:")].strip())
                     cur_object.child_id = int(line[line.find("Child object:") + 13:])
                 if line.find("Description:") != -1:
                     cur_object.description = line[line.find("Description:") + 13:].strip()
@@ -61,15 +66,14 @@ class ZGame:
             elif o.object_id in nodes_to_ignore:
                 continue
 
-            node_key = str(o.object_id) + "\n" + str(o.description)
-            G.add_node(node_key)
+            G.add_node(o.object_key())
 
         for o in self.object_list:
             if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
-                child_node_key = str(o.object_id) + "\n" + str(o.description)
-                parent_node_key = str(self.object_list[o.parent_id - 1].object_id) + "\n" + str(self.object_list[o.parent_id - 1].description)
+                G.add_edge(o.object_key(), self.object_list[o.parent_id - 1].object_key())
 
-                G.add_edge(child_node_key, parent_node_key)
+            if o.sibling_id != 0 and o.object_id not in nodes_to_ignore:
+                G.add_edge(o.object_key(), self.object_list[o.sibling_id - 1].object_key())
 
         pos = graphviz_layout(G, prog='dot')
         nx.draw_networkx(G, pos, node_size=1600, node_color='blue', node_alpha=0.3, node_text_size=12)
