@@ -1,3 +1,9 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# networkx 1.11 has a bug with importing the graphviz stuff
+from networkx.drawing.nx_agraph import graphviz_layout
+
 class ZObject:
     def __init__(self):
         self.object_id = 0
@@ -41,3 +47,31 @@ class ZGame:
                     cur_object = ZObject()
 
         return title, object_total, len(self.object_list)
+
+    def graph_object_file(self, nodes_to_ignore):
+        if len(self.object_list) == 0:
+            return
+
+        G = nx.DiGraph()
+
+        for o in self.object_list:
+            if o.parent_id in nodes_to_ignore:
+                nodes_to_ignore.append(o.object_id)
+                continue
+            elif o.object_id in nodes_to_ignore:
+                continue
+
+            node_key = str(o.object_id) + "\n" + str(o.description)
+            G.add_node(node_key)
+
+        for o in self.object_list:
+            if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
+                child_node_key = str(o.object_id) + "\n" + str(o.description)
+                parent_node_key = str(self.object_list[o.parent_id - 1].object_id) + "\n" + str(self.object_list[o.parent_id - 1].description)
+
+                G.add_edge(child_node_key, parent_node_key)
+
+        pos = graphviz_layout(G, prog='dot')
+        nx.draw_networkx(G, pos, node_size=1600, node_color='blue', node_alpha=0.3, node_text_size=12)
+
+        plt.show()
