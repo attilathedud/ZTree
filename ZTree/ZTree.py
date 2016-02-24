@@ -35,6 +35,8 @@ def main(argv):
 
     z_game = zo.ZGame(object_file)
 
+    print("Parsing object file...")
+
     # Parse the object file
     title, object_total, object_list_count = z_game.parse_object_file()
 
