@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 # networkx 1.11 has a bug with importing the graphviz stuff
 from networkx.drawing.nx_agraph import graphviz_layout
 
-item_object_key = 1
-room_object_key = 2
+ITEM_OBJECT_KEY = 1
+ROOM_OBJECT_KEY = 2
 
 class ZObject:
     def __init__(self):
@@ -63,7 +63,7 @@ class ZGame:
                             if property_value is not 0 and cur_object.object_id not in self.compass_directions and \
                                     property_id in self.compass_directions.keys():
                                 cur_object.directions[self.compass_directions[property_id]] = property_value
-                            elif property_id is item_object_key or property_id is room_object_key:
+                            elif property_id is ITEM_OBJECT_KEY or property_id is ROOM_OBJECT_KEY:
                                 cur_object.object_type = property_id
                 else:
                     if line.find(". Attributes") != -1:
@@ -95,6 +95,10 @@ class ZGame:
 
         G = nx.DiGraph()
 
+        node_items_list = []
+        node_rooms_list = []
+        node_unknowns_list = []
+
         for o in self.object_list:
             if o.parent_id in nodes_to_ignore:
                 nodes_to_ignore.append(o.object_id)
@@ -104,19 +108,42 @@ class ZGame:
 
             G.add_node(o.object_key())
 
+            if o.object_type is ITEM_OBJECT_KEY:
+                node_items_list.append(o.object_key())
+            elif o.object_type is ROOM_OBJECT_KEY:
+                node_rooms_list.append(o.object_key())
+            else:
+                node_unknowns_list.append(o.object_key())
+
         for o in self.object_list:
             if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
-                G.add_edge(self.object_list[o.parent_id - 1].object_key(), o.object_key())
+                G.add_edge(self.object_list[o.parent_id - 1].object_key(), o.object_key(), direction="")
 
             if o.sibling_id != 0 and o.object_id not in nodes_to_ignore:
-                G.add_edge(self.object_list[o.sibling_id - 1].object_key(), o.object_key())
+                G.add_edge(self.object_list[o.sibling_id - 1].object_key(), o.object_key(), direction="")
 
             for direction, node in o.directions.items():
                 if node < len(self.object_list):
-                    G.add_edge(o.object_key(), self.object_list[node-1].object_key())
+                    G.add_edge(o.object_key(), self.object_list[node-1].object_key(), direction=direction)
 
         pos = graphviz_layout(G, prog='dot')
         nx.draw_networkx(G, pos,
-                         node_size=500, node_color='blue', alpha=0.3, font_size=8)
+                         node_size=500,
+                         alpha=0.6, font_size=8)
+
+        edge_labels = dict([((u, v,), d['direction'])
+                            for u, v, d in G.edges(data=True)])
+
+        nx.draw_networkx_nodes(G, pos, nodelist=node_items_list,
+                               node_color="r", node_size=500, alpha=0.6)
+        nx.draw_networkx_nodes(G, pos, nodelist=node_rooms_list,
+                               node_color="b", node_size=500, alpha=0.6)
+        nx.draw_networkx_nodes(G, pos, nodelist=node_unknowns_list,
+                               node_color="y", node_size=500, alpha=0.6)
+
+        nx.draw_networkx_edges(G, pos)
+        nx.draw_networkx_labels(G, pos, font_size=8)
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8, alpha=0.6)
+
         plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
         plt.show()
