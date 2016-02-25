@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 # networkx 1.11 has a bug with importing the graphviz stuff
 from networkx.drawing.nx_agraph import graphviz_layout
 
-ITEM_OBJECT_KEY = 1
-ROOM_OBJECT_KEY = 2
+ROOM_ATTRIBUTE_KEY = 9
 
 class ZObject:
     def __init__(self):
@@ -15,7 +14,7 @@ class ZObject:
         self.child_id = 0
         self.sibling_id = 0
         self.directions = {}
-        self.object_type = 0
+        self.attributes = []
 
     def object_key(self):
         return str(self.object_id) + "\n" + str(self.description)
@@ -63,11 +62,13 @@ class ZGame:
                             if property_value is not 0 and cur_object.object_id not in self.compass_directions and \
                                     property_id in self.compass_directions.keys():
                                 cur_object.directions[self.compass_directions[property_id]] = property_value
-                            elif property_id is ITEM_OBJECT_KEY or property_id is ROOM_OBJECT_KEY:
-                                cur_object.object_type = property_id
                 else:
                     if line.find(". Attributes") != -1:
-                        cur_object.object_id = int(line[: line.find(". Attributes")].strip())
+                        cur_object.object_id = int(line[: line.find(". Attributes:")].strip())
+                        cur_object.attributes = line[line.find(". Attributes:") + 13:].strip().split(',')
+
+                        if cur_object.attributes[0] == "None":
+                            cur_object.attributes[0] = -1
                     elif line.find("Parent object:") != -1:
                         cur_object.parent_id = int(line[line.find("Parent object:") + 14: line.find("Sibling object:")].strip())
                         cur_object.sibling_id = int(line[line.find("Sibling object:") + 15: line.find("Child object:")].strip())
@@ -95,7 +96,6 @@ class ZGame:
 
         G = nx.DiGraph()
 
-        node_items_list = []
         node_rooms_list = []
         node_unknowns_list = []
 
@@ -108,12 +108,19 @@ class ZGame:
 
             G.add_node(o.object_key())
 
+            if ROOM_ATTRIBUTE_KEY in (int(attribute) for attribute in o.attributes ):
+                node_rooms_list.append(o.object_key())
+            else:
+                node_unknowns_list.append(o.object_key())
+
+            """
             if o.object_type is ITEM_OBJECT_KEY:
                 node_items_list.append(o.object_key())
             elif o.object_type is ROOM_OBJECT_KEY:
                 node_rooms_list.append(o.object_key())
             else:
                 node_unknowns_list.append(o.object_key())
+            """
 
         for o in self.object_list:
             if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
@@ -134,12 +141,10 @@ class ZGame:
         edge_labels = dict([((u, v,), d['direction'])
                             for u, v, d in G.edges(data=True)])
 
-        nx.draw_networkx_nodes(G, pos, nodelist=node_items_list,
-                               node_color="r", node_size=500, alpha=0.6)
         nx.draw_networkx_nodes(G, pos, nodelist=node_rooms_list,
                                node_color="b", node_size=500, alpha=0.6)
         nx.draw_networkx_nodes(G, pos, nodelist=node_unknowns_list,
-                               node_color="y", node_size=500, alpha=0.6)
+                               node_color="r", node_size=500, alpha=0.6)
 
         nx.draw_networkx_edges(G, pos)
         nx.draw_networkx_labels(G, pos, font_size=8)
