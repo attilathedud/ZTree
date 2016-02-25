@@ -22,7 +22,7 @@ class ZObject:
     def display_node(self):
         print("Object ID: " + str(self.object_id) + "\nParent ID: " + str(self.parent_id) + "\nChild ID: " +
               str(self.child_id) + "\nSibling ID: " + str(self.sibling_id) + "\nDescription: " + self.description +
-              "\nDirections: " + self.directions)
+              "\nDirections: " + str(self.directions) + "\nAttributes: " + str(self.attributes))
 
 
 class ZGame:
@@ -108,19 +108,10 @@ class ZGame:
 
             G.add_node(o.object_key())
 
-            if ROOM_ATTRIBUTE_KEY in (int(attribute) for attribute in o.attributes ):
+            if ROOM_ATTRIBUTE_KEY in (int(attribute) for attribute in o.attributes):
                 node_rooms_list.append(o.object_key())
             else:
                 node_unknowns_list.append(o.object_key())
-
-            """
-            if o.object_type is ITEM_OBJECT_KEY:
-                node_items_list.append(o.object_key())
-            elif o.object_type is ROOM_OBJECT_KEY:
-                node_rooms_list.append(o.object_key())
-            else:
-                node_unknowns_list.append(o.object_key())
-            """
 
         for o in self.object_list:
             if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
@@ -131,7 +122,7 @@ class ZGame:
 
             for direction, node in o.directions.items():
                 if node < len(self.object_list):
-                    G.add_edge(o.object_key(), self.object_list[node-1].object_key(), direction=direction)
+                    G.add_edge(self.object_list[node-1].object_key(), o.object_key(), direction=direction)
 
         pos = graphviz_layout(G, prog='dot')
         nx.draw_networkx(G, pos,
