@@ -90,7 +90,7 @@ class ZGame:
 
         return title, object_total, len(self.object_list)
 
-    def graph_object_file(self, nodes_to_ignore):
+    def graph_object_file(self, nodes_to_ignore, draw_siblings):
         if len(self.object_list) == 0:
             return
 
@@ -117,8 +117,9 @@ class ZGame:
             if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
                 G.add_edge(self.object_list[o.parent_id - 1].object_key(), o.object_key(), direction="")
 
-            if o.sibling_id != 0 and o.object_id not in nodes_to_ignore:
-                G.add_edge(self.object_list[o.sibling_id - 1].object_key(), o.object_key(), direction="")
+            if draw_siblings:
+                if o.sibling_id != 0 and o.object_id not in nodes_to_ignore:
+                    G.add_edge(self.object_list[o.sibling_id - 1].object_key(), o.object_key(), direction="")
 
             for direction, node in o.directions.items():
                 if node < len(self.object_list):
