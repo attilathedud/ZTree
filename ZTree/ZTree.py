@@ -11,15 +11,17 @@ def main(argv):
                    " - " + "maps Infocom story files into a directional graph. By Nathan Tucker." + "\n\n" + \
                    "\t-o, --objects\tpath to object file (from infodump -o)" + "\n" + \
                    "\t-s, --siblings\tdisplay sibling relations (default false)" + "\n" + \
-                   "\t-n, --nodes\tcomma-separated list of nodes to ignore" + "\n\n" + \
+                   "\t-n, --nodes\tcomma-separated list of nodes to ignore" + "\n" + \
+                   "\t-d, --display\tdisplay all nodes(0), only rooms(1), only objects(2)" + "\n\n" + \
                    "example: ZTree.py -o ../Dumps/awaken.z5 -n 1,4,6,118,125\n"
 
     object_file = ""
     nodes_to_ignore = []
     display_sibling_paths = False
+    display_mode = 0
 
     try:
-        opts, args = getopt.getopt(argv, "ho:n:s", ["objects=", "nodes=", "siblings"])
+        opts, args = getopt.getopt(argv, "ho:n:sd:", ["objects=", "nodes=", "siblings", "display="])
     except getopt.GetoptError:
         print(help_message)
         sys.exit(2)
@@ -33,6 +35,8 @@ def main(argv):
             nodes_to_ignore = [int(n.strip()) for n in arg.split(',')]
         elif opt in ("-s", "--siblings"):
             display_sibling_paths = True
+        elif opt in ("-d", "--display"):
+            display_mode = int(arg)
 
     if not object_file:
         print(help_message)
@@ -49,7 +53,7 @@ def main(argv):
     print("Nodes ignored: " + ", ".join(str(i) for i in nodes_to_ignore))
 
     # Setup and draw the graph
-    z_game.graph_object_file(nodes_to_ignore, display_sibling_paths)
+    z_game.graph_object_file(nodes_to_ignore, display_sibling_paths, display_mode)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

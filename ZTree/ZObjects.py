@@ -90,7 +90,7 @@ class ZGame:
 
         return title, object_total, len(self.object_list)
 
-    def graph_object_file(self, nodes_to_ignore, draw_siblings):
+    def graph_object_file(self, nodes_to_ignore, draw_siblings, display_mode):
         if len(self.object_list) == 0:
             return
 
@@ -106,14 +106,24 @@ class ZGame:
             elif o.object_id in nodes_to_ignore:
                 continue
 
-            G.add_node(o.object_key())
+            if display_mode is 0:
+                G.add_node(o.object_key())
 
-            if ROOM_ATTRIBUTE_KEY in (int(attribute) for attribute in o.attributes):
+                if ROOM_ATTRIBUTE_KEY in (int(attribute) for attribute in o.attributes):
+                    node_rooms_list.append(o.object_key())
+                else:
+                    node_unknowns_list.append(o.object_key())
+            elif display_mode is 1 and ROOM_ATTRIBUTE_KEY in (int(attribute) for attribute in o.attributes):
+                G.add_node(o.object_key())
                 node_rooms_list.append(o.object_key())
-            else:
+            elif display_mode is 2 and ROOM_ATTRIBUTE_KEY not in (int(attribute) for attribute in o.attributes):
+                G.add_node(o.object_key())
                 node_unknowns_list.append(o.object_key())
 
         for o in self.object_list:
+            if o.object_key() not in G.nodes():
+                continue
+
             if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
                 G.add_edge(self.object_list[o.parent_id - 1].object_key(), o.object_key(), direction="")
 
@@ -121,9 +131,10 @@ class ZGame:
                 if o.sibling_id != 0 and o.object_id not in nodes_to_ignore:
                     G.add_edge(self.object_list[o.sibling_id - 1].object_key(), o.object_key(), direction="")
 
-            for direction, node in o.directions.items():
-                if node < len(self.object_list):
-                    G.add_edge(self.object_list[node-1].object_key(), o.object_key(), direction=direction)
+            if display_mode is not 2:
+                for direction, node in o.directions.items():
+                    if node < len(self.object_list):
+                        G.add_edge(self.object_list[node-1].object_key(), o.object_key(), direction=direction)
 
         pos = graphviz_layout(G, prog='dot')
         nx.draw_networkx(G, pos,
