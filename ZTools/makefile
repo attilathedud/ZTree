@@ -15,37 +15,22 @@ LIBS =
 .1.man:
 	$(NROFF) -man $*.1 | col -b > $*.man
 
-MANPAGES = infodump.1 inforead.1 txd.1 check.1 pix2gif.1
+MANPAGES = infodump.1 txd.1
 FORMATTEDMAN = $(MANPAGES:.1=.man)
 
-CINC =
-COBJS = check.o
 
 IINC = tx.h
 IOBJS = infodump.o showhead.o showdict.o showobj.o showverb.o txio.o infinfo.o symbols.o
 
-PINC = pix2gif.h
-POBJS = pix2gif.o
-
 TINC = tx.h
 TOBJS = txd.o txio.o showverb.o infinfo.o symbols.o showobj.o
 
-all : check infodump pix2gif txd doc
-
-check : $(COBJS)
-	$(CC) -o $@ $(LDFLAGS) $(COBJS) $(LIBS)
-
-$(COBJS) : $(CINC)
+all : infodump txd doc
 
 infodump : $(IOBJS)
 	$(CC) -o $@ $(LDFLAGS) $(IOBJS) $(LIBS)
 
 $(IOBJS) : $(IINC)
-
-pix2gif : $(POBJS)
-	$(CC) -o $@ $(LDFLAGS) $(POBJS) $(LIBS)
-
-$(POBJS) : $(PINC)
 
 txd : $(TOBJS)
 	$(CC) -o $@ $(LDFLAGS) $(TOBJS) $(LIBS)
@@ -53,6 +38,6 @@ txd : $(TOBJS)
 $(TOBJS) : $(TINC)
 
 clean :
-	-rm *.o check infodump pix2gif txd $(FORMATTEDMAN)
+	-rm *.o infodump txd $(FORMATTEDMAN)
 
 doc: $(FORMATTEDMAN)

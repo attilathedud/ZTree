@@ -12,7 +12,7 @@ def main(argv):
                    "\t-o, --objects\tpath to object file (from infodump -o)" + "\n" + \
                    "\t-s, --siblings\tdisplay sibling relations (default false)" + "\n" + \
                    "\t-n, --nodes\tcomma-separated list of nodes to ignore" + "\n" + \
-                   "\t-d, --display\tdisplay all nodes(0), only rooms(1), only objects(2)" + "\n\n" + \
+                   "\t-d, --display\tdisplay all nodes(0), only rooms(1), only objects(2), objects in rooms(3)" + "\n\n" + \
                    "example: ZTree.py -o ../Dumps/awaken.z5 -n 1,4,6,118,125\n"
 
     object_file = ""
@@ -53,7 +53,10 @@ def main(argv):
     print("Nodes ignored: " + ", ".join(str(i) for i in nodes_to_ignore))
 
     # Setup and draw the graph
-    z_game.graph_object_file(nodes_to_ignore, display_sibling_paths, display_mode)
+    if display_mode is 3:
+        z_game.graph_traditional_object_file(nodes_to_ignore)
+    else:
+        z_game.graph_network_object_file(nodes_to_ignore, display_sibling_paths, display_mode)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -90,7 +90,63 @@ class ZGame:
 
         return title, object_total, len(self.object_list)
 
-    def graph_object_file(self, nodes_to_ignore, draw_siblings, display_mode):
+    def graph_traditional_object_file(self, nodes_to_ignore):
+        if len(self.object_list) == 0:
+            return
+
+        G = nx.DiGraph()
+
+        node_rooms_list = []
+        node_labels = {}
+
+        for o in self.object_list:
+            if o.parent_id in nodes_to_ignore:
+                nodes_to_ignore.append(o.object_id)
+                continue
+            elif o.object_id in nodes_to_ignore:
+                continue
+
+            G.add_node(o.object_key())
+
+            if ROOM_ATTRIBUTE_KEY in (int(attribute) for attribute in o.attributes):
+                node_rooms_list.append(o.object_key())
+                node_labels[o.object_key()] = o.description
+
+        for o in self.object_list:
+            if o.object_key() not in G.nodes():
+                continue
+
+            if o.parent_id != 0 and o.object_id not in nodes_to_ignore:
+                parent_key = self.object_list[o.parent_id - 1].object_key()
+
+                node_key_to_get = node_labels.get(parent_key, "")
+                if node_key_to_get is not "":
+                    node_labels[parent_key] = node_key_to_get + '\n\t' + o.description
+                else:
+                    node_labels[parent_key] = o.description
+
+            for direction, node in o.directions.items():
+                if node < len(self.object_list):
+                    G.add_edge(self.object_list[node-1].object_key(), o.object_key(), direction=direction)
+
+        pos = graphviz_layout(G, prog='dot')
+
+        edge_labels = dict([((u, v,), d['direction'])
+                            for u, v, d in G.edges(data=True)])
+
+        nx.draw_networkx_nodes(G, pos, nodelist=node_rooms_list,
+                               node_color="b", node_size=5000, alpha=0.8)
+
+        nx.draw_networkx_edges(G, pos)
+
+        nx.draw_networkx_labels(G, pos, labels=node_labels, font_size=8)
+
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8, alpha=0.5)
+
+        plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
+        plt.show()
+
+    def graph_network_object_file(self, nodes_to_ignore, draw_siblings, display_mode):
         if len(self.object_list) == 0:
             return
 
@@ -137,9 +193,6 @@ class ZGame:
                         G.add_edge(self.object_list[node-1].object_key(), o.object_key(), direction=direction)
 
         pos = graphviz_layout(G, prog='dot')
-        nx.draw_networkx(G, pos,
-                         node_size=500,
-                         alpha=0.6, font_size=8)
 
         edge_labels = dict([((u, v,), d['direction'])
                             for u, v, d in G.edges(data=True)])
