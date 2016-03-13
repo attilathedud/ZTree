@@ -4,11 +4,11 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Ztree : A python graphing tool that constructs network graphs of Z-Games">
+    <meta name="description" content="ZTree : A python graphing tool to construct network graphs of Z-Games">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Ztree</title>
+    <title>ZTree</title>
   </head>
 
   <body>
@@ -18,8 +18,8 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/attilathedud/ZTree">View on GitHub</a>
 
-          <h1 id="project_title">Ztree</h1>
-          <h2 id="project_tagline">A python graphing tool that constructs network graphs of Z-Games</h2>
+          <h1 id="project_title">ZTree</h1>
+          <h2 id="project_tagline">A python graphing tool to construct network graphs of Z-Games</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/attilathedud/ZTree/zipball/master">Download this project as a .zip file</a>
@@ -31,10 +31,16 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>
-<a id="ztree" class="anchor" href="#ztree" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ZTree</h1>
-
-<div></div>
+        <div>
+  <img src="https://attilathedud.github.io/ZTree/display_mode_0.png" alt="display mode 0">
+  Display mode 0 shows every node present in the game and links objects to their parents. Passing in the sibling flag will also display sibling relations between nodes.
+  <img src="https://attilathedud.github.io/ZTree/display_mode_1.png" alt="display mode 1">
+  Display mode 1 shows all the rooms in the game with directional edges drawn. Nodes that aren't legally interpreted as rooms but can be moved to will be displayed as just text.
+  <img src="https://attilathedud.github.io/ZTree/display_mode_2.png" alt="display mode 2">
+  Display mode 2 shows all the objects in the game and their relations (e.g., if a pen is inside a drawer inside a desk).
+  <img src="https://attilathedud.github.io/ZTree/display_mode_3.png" alt="display mode 3">
+  Display mode 3 shows all objects inside their respective room with directions between rooms drawn. Somewhat experimental. Objects with no valid room as drawn as text with no node.
+</div>
 
 <h2>
 <a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h2>
@@ -86,6 +92,7 @@ example: ZTree.py -o ../Dumps/awaken.z5 -n 1,4,6,118,125
 
 <ul>
 <li><a href="https://networkx.github.io/">https://networkx.github.io/</a></li>
+<li><a href="http://brew.sh/">http://brew.sh/</a></li>
 <li><a href="http://penandpants.com/2013/04/04/install-scientific-python-on-mac-os-x/">http://penandpants.com/2013/04/04/install-scientific-python-on-mac-os-x/</a></li>
 <li><a href="https://github.com/Homebrew/homebrew-python">https://github.com/Homebrew/homebrew-python</a></li>
 <li>graphviz from brew</li>
@@ -109,7 +116,7 @@ example: ZTree.py -o ../Dumps/awaken.z5 -n 1,4,6,118,125
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Ztree maintained by <a href="https://github.com/attilathedud">attilathedud</a></p>
+        <p class="copyright">ZTree maintained by <a href="https://github.com/attilathedud">attilathedud</a></p>
         <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
