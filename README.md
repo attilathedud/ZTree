@@ -1,5 +1,14 @@
 # ZTree
-<div></div>
+<div>
+  <img src="https://attilathedud.github.io/ZTree/display_mode_0.png" alt="display mode 0">
+  Display mode 0 shows every node present in the game and links objects to their parents. Passing in the sibling flag will also display sibling relations between nodes.
+  <img src="https://attilathedud.github.io/ZTree/display_mode_1.png" alt="display mode 1">
+  Display mode 1 shows all the rooms in the game with directional edges drawn. Nodes that aren't legally interpreted as rooms but can be moved to will be displayed as just text.
+  <img src="https://attilathedud.github.io/ZTree/display_mode_2.png" alt="display mode 2">
+  Display mode 2 shows all the objects in the game and their relations (e.g., if a pen is inside a drawer inside a desk).
+  <img src="https://attilathedud.github.io/ZTree/display_mode_3.png" alt="display mode 3">
+  Display mode 3 shows all objects inside their respective room with directions between rooms drawn. Somewhat experimental. Objects with no valid room as drawn as text with no node.
+</div>
 
 ##About
 ZTree is a python graphing tool that constructs network graphs of Z-Machine games (http://inform-fiction.org/zmachine/). It is packaged with a slimmed-down version of Mark Howell's ZTools to dump the game files. A helper script can be found in the "Scripts" directory and is supposed to be run from there like so:
@@ -42,6 +51,7 @@ The different display modes are shown above.
 ##Source
 ZTree is licensed under the Apache License, so feel free to play around with the source. It uses the following resources from the following sources:
 - https://networkx.github.io/
+- http://brew.sh/
 - http://penandpants.com/2013/04/04/install-scientific-python-on-mac-os-x/
 - https://github.com/Homebrew/homebrew-python
 - graphviz from brew
