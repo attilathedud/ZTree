@@ -6,7 +6,7 @@ import getopt
 
 
 def main(argv):
-    version = "0.1"
+    version = "1.0"
     help_message = "usage: ZTree.py -o <object_file> -n <node1,node2,node3>" + "\n\n" + "ZTree version " + version + \
                    " - " + "maps Infocom story files into a directional graph. By Nathan Tucker." + "\n\n" + \
                    "\t-o, --objects\tpath to object file (from infodump -o)" + "\n" + \

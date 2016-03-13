@@ -6,6 +6,7 @@ from networkx.drawing.nx_agraph import graphviz_layout
 
 ROOM_ATTRIBUTE_KEY = 9
 
+
 class ZObject:
     def __init__(self):
         self.object_id = 0
