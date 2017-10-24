@@ -1,4 +1,7 @@
 # ZTree
+
+This project is no longer being maintained and has been supplemented by [Inform Mapper.](https://github.com/attilathedud/inform_mapper/)
+
 <div>
   <img src="https://attilathedud.github.io/ZTree/display_mode_0.png" alt="display mode 0">
   Display mode 0 shows every node present in the game and links objects to their parents. Passing in the sibling flag will also display sibling relations between nodes.
@@ -58,9 +61,3 @@ ZTree is licensed under the Apache License, so feel free to play around with the
 - https://pygraphviz.github.io/
 - http://inform-fiction.org/zmachine/ztools.html
 - http://ifarchive.org/if-archive/games/zcode/
-
-##Future Development
-- Reimplement the parser to remove the dependency from ZTools and be able to structure data as desired
-- Display node text on hover
-- Highlight entry node of the game
-- Some work on display mode 3 to clean up some bugs
