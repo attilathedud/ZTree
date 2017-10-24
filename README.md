@@ -1,6 +1,6 @@
 # ZTree
 
-This project is no longer being maintained and has been supplemented by [Inform Mapper.](https://github.com/attilathedud/inform_mapper/)
+This project is no longer being maintained and has been supplanted by [Inform Mapper.](https://github.com/attilathedud/inform_mapper/)
 
 <div>
   <img src="https://attilathedud.github.io/ZTree/display_mode_0.png" alt="display mode 0">
@@ -13,7 +13,7 @@ This project is no longer being maintained and has been supplemented by [Inform 
   Display mode 3 shows all objects inside their respective room with directions between rooms drawn. Somewhat experimental. Objects with no valid room as drawn as text with no node.
 </div>
 
-##About
+## About
 ZTree is a python graphing tool that constructs network graphs of Z-Machine games (http://inform-fiction.org/zmachine/). It is packaged with a slimmed-down version of Mark Howell's ZTools to dump the game files. A helper script can be found in the "Scripts" directory and is supposed to be run from there like so:
 ```
 ./dump_game ../Games/awaken.z5
@@ -51,7 +51,7 @@ example: ZTree.py -o ../Dumps/awaken.z5 -n 1,4,6,118,125
 
 The different display modes are shown above.
 
-##Source
+## Source
 ZTree is licensed under the Apache License, so feel free to play around with the source. It uses the following resources from the following sources:
 - https://networkx.github.io/
 - http://brew.sh/
